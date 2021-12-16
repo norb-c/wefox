@@ -1,0 +1,41 @@
+version: '3.7'
+services:
+  wefox:
+    build:
+      context: .
+    volumes:
+      - ./:/usr/src/wefox
+    ports:
+      - 3000:3000
+    container_name: nodejs-api
+    depends_on:
+      - mongodb
+      - redis
+    links:
+      - redis
+      - mongodb
+    environment:
+      - REDIS_URL=redis://cache
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_URI=mongodb://database
+      - HOST=http://localhost/
+      - DOMAIN=localhost
+      - JWT_EXPIRY=3600
+      - JWT_SECRET=iYSS3druQDJb9oP2dgVB5qKOPUGtYOT8
+      - WEATHER_API_KEY=75f7b2035eef79362aefb0b5b8f7b84b
+      - WEATHER_HOST=https://api.openweathermap.org/data/2.5/weather
+      - GOOGLE_HOST=https://maps.googleapis.com/maps/api/geocode/json
+      - GOOGLE_API_KEY=AIzaSyAQKfcWkU1v6kadXf810OlPGJHRnyIw4pU
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    container_name: database
+    volumes:
+      - ./db/:/data/db
+  redis:
+    image: redis
+    container_name: cache
+    expose:
+      - 6379

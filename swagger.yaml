@@ -1,0 +1,138 @@
+swagger: '2.0'
+tags:
+  - name: users
+    description: users APIs
+  - name: address
+    description: Address APIs
+  - name: weather
+    description: Weather APIs
+    
+
+paths:
+  # [GET] users
+  /api/auth:
+    # [POST] users
+    post:
+      tags:
+        - users
+      summary: login User
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: '#/definitions/users'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+  /api/auth/register:
+    # [POST] users
+    post:
+      tags:
+        - users
+      summary: Register User
+      parameters:
+        - name: body
+          in: body
+          description: user Data
+          required: true
+          schema:
+            $ref: '#/definitions/users'
+      responses:
+        201:
+          description: 'Created'
+        400:
+          description: 'Bad Request'
+        409:
+          description: 'Conflict'
+        500:
+          description: 'Server Error'
+
+  /api/address:
+    post:
+      tags:
+        - address
+      summary: Find address
+      parameters:
+        - name: body
+          in: body
+          description: address data
+          required: true
+          schema:
+            $ref: '#/definitions/address'
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+  /api/weather:
+    post:
+      tags:
+        - weather
+      summary: Find get weather details
+      parameters:
+        - name: body
+          in: body
+          description: address data
+          required: true
+          schema:
+            $ref: '#/definitions/address'
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: 'OK'
+        500:
+          description: 'Server Error'
+
+# definitions
+definitions:
+  users:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        description: user Email
+      password:
+        type: string
+        description: user Password
+  address:
+    type: object
+    required:
+      - email
+      - password
+    properties:
+      street:
+        type: string
+        description: street
+      streetNumber:
+        type: string
+        description: street number
+      postalCode:
+        type: string
+        description: postal code
+      town:
+        type: string
+        description: town
+      country:
+        type: string
+        description: country
+
+schemes:
+  - https
+  - http
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
